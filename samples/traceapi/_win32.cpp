@@ -7772,6 +7772,12 @@ DWORD (__stdcall * Real_VerLanguageNameW)(DWORD a0,
                                           DWORD a2)
     = VerLanguageNameW;
 
+LPVOID (__stdcall * Real_VirtualAlloc)(LPVOID a1,
+                                       SIZE_T a2,
+                                       DWORD a3,
+                                       DWORD a4)
+    = VirtualAlloc;
+
 LPVOID (__stdcall * Real_VirtualAllocEx)(HANDLE a0,
                                          LPVOID a1,
                                          SIZE_T a2,
@@ -31234,6 +31240,22 @@ DWORD __stdcall Mine_VerLanguageNameW(DWORD a0,
     return rv;
 }
 
+LPVOID __stdcall Mine_VirtualAlloc(LPVOID a0,
+                                   SIZE_T a1,
+                                   DWORD a2,
+                                   DWORD a3)
+{
+    _PrintEnter("VirtualAlloc(%p,%p,%p,%p)\n", a0, a1, a2, a3);
+
+    LPVOID rv = 0;
+    __try {
+        rv = Real_VirtualAlloc(a0, a1, a2, a3);
+    } __finally {
+        _PrintExit("VirtualAlloc(,,,,) -> %p\n", rv);
+    };
+    return rv;
+}
+
 LPVOID __stdcall Mine_VirtualAllocEx(HANDLE a0,
                                      LPVOID a1,
                                      SIZE_T a2,
@@ -35216,6 +35238,7 @@ LONG AttachDetours(VOID)
     ATTACH(ValidateRgn);
     ATTACH(VerLanguageNameA);
     ATTACH(VerLanguageNameW);
+    ATTACH(VirtualAlloc);
     ATTACH(VirtualAllocEx);
     ATTACH(VirtualFreeEx);
     ATTACH(VirtualProtectEx);
@@ -36897,6 +36920,7 @@ LONG DetachDetours(VOID)
     DETACH(ValidateRgn);
     DETACH(VerLanguageNameA);
     DETACH(VerLanguageNameW);
+    DETACH(VirtualAlloc);
     DETACH(VirtualAllocEx);
     DETACH(VirtualFreeEx);
     DETACH(VirtualProtectEx);
