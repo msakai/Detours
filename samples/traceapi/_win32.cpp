@@ -33733,6 +33733,7 @@ LONG AttachDetours(VOID)
     // For this many APIs, we'll ignore one or two can't be detoured.
     DetourSetIgnoreTooSmall(TRUE);
 
+#if 0
     ATTACH(AbortDoc);
     ATTACH(AbortPath);
     ATTACH(ActivateKeyboardLayout);
@@ -35238,7 +35239,9 @@ LONG AttachDetours(VOID)
     ATTACH(ValidateRgn);
     ATTACH(VerLanguageNameA);
     ATTACH(VerLanguageNameW);
+#endif
     ATTACH(VirtualAlloc);
+#if 0
     ATTACH(VirtualAllocEx);
     ATTACH(VirtualFreeEx);
     ATTACH(VirtualProtectEx);
@@ -35396,6 +35399,7 @@ LONG AttachDetours(VOID)
     ATTACH(setsockopt);
     ATTACH(shutdown);
     ATTACH(socket);
+#endif
 
     PVOID *ppbFailedPointer = NULL;
     LONG error = DetourTransactionCommitEx(&ppbFailedPointer);
@@ -35415,6 +35419,7 @@ LONG DetachDetours(VOID)
     // For this many APIs, we'll ignore one or two can't be detoured.
     DetourSetIgnoreTooSmall(TRUE);
 
+#if 0
     DETACH(AbortDoc);
     DETACH(AbortPath);
     DETACH(ActivateKeyboardLayout);
@@ -36920,7 +36925,9 @@ LONG DetachDetours(VOID)
     DETACH(ValidateRgn);
     DETACH(VerLanguageNameA);
     DETACH(VerLanguageNameW);
+#endif
     DETACH(VirtualAlloc);
+#if 0
     DETACH(VirtualAllocEx);
     DETACH(VirtualFreeEx);
     DETACH(VirtualProtectEx);
@@ -37078,6 +37085,7 @@ LONG DetachDetours(VOID)
     DETACH(setsockopt);
     DETACH(shutdown);
     DETACH(socket);
+#endif
 
     if (DetourTransactionCommit() != 0) {
         PVOID *ppbFailedPointer = NULL;
